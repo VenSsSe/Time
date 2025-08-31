@@ -1,0 +1,90 @@
+/* --- Theme: Crypto --- */
+body.theme-crypto {
+    background-color: #131722;
+    color: #d1d4dc;
+}
+
+/* Стили для контейнера графика */
+body.theme-crypto #crypto-canvas {
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90vw;
+    height: 60vh;
+    max-width: 1200px;
+    z-index: -1;
+    opacity: 0.5;
+}
+
+/* Стили для отображения цены */
+#btc-price-container {
+    position: relative; 
+    width: fit-content;
+    margin: 0 auto 1.5rem auto;
+    padding: 0.5rem 1.5rem;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: rgba(40, 40, 50, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.5rem;
+    backdrop-filter: blur(5px);
+    z-index: 100;
+    transition: opacity 0.5s ease, cursor 0.3s ease;
+    opacity: 0;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+body.theme-crypto #btc-price-container {
+    opacity: 1;
+    pointer-events: auto; /* Делаем блок кликабельным */
+    cursor: pointer; /* ИСПРАВЛЕНИЕ: Добавляем курсор-указатель */
+}
+
+/* Переопределение стилей для элементов таймера и кнопок */
+body.theme-crypto .timer-block,
+body.theme-crypto .action-button {
+    background-color: rgba(28, 33, 46, 0.7);
+    border: 1px solid #363a45;
+    box-shadow: 0 0 15px rgba(80, 128, 255, 0.1);
+    backdrop-filter: blur(3px);
+    color: #d1d4dc;
+}
+
+body.theme-crypto .action-button:hover:not(:disabled) {
+    background-color: #2a2e39;
+    border-color: #5080ff;
+}
+
+body.theme-crypto .back-button {
+    background-color: rgba(40, 40, 50, 0.7);
+}
+
+/* Свечение для текста и цифр */
+body.theme-crypto .timer-number,
+body.theme-crypto .coming-soon-title {
+    color: #fff;
+    text-shadow: 0 0 8px rgba(80, 128, 255, 0.5);
+}
+
+body.theme-crypto .style-changer-img {
+     filter: grayscale(80%) brightness(1.2) drop-shadow(0 0 10px rgba(80, 128, 255, 0.5));
+}
+
+/* Стили для кнопок выбора криптовалюты */
+.crypto-button {
+    color: #d1d4dc;
+    background-color: rgba(28, 33, 46, 0.8);
+    border: 1px solid #363a45 !important;
+}
+.crypto-button:hover {
+    color: #fff;
+    border-color: #5080ff !important;
+    transform: scale(1.05);
+    background-color: #2a2e39 !important;
+}
+

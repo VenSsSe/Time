@@ -1,0 +1,67 @@
+/* --- Theme: Neon (Retrowave/Synthwave Style) --- */
+body.theme-neon {
+    /* Градиентный фон в стиле Retrowave */
+    background: #000; /* Fallback */
+    background: 
+        radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%),
+        linear-gradient(to bottom, rgba(22, 22, 22, 0) 0%, #101010 100%);
+    color: #fff;
+    overflow: hidden; /* Важно для эффекта звезд */
+}
+
+/* Эффект звездного неба */
+body.theme-neon::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 200%;
+    background-image: 
+        radial-gradient(white, rgba(255,255,255,0) 2px),
+        radial-gradient(white, rgba(255,255,255,0) 2px);
+    background-size: 600px 600px, 400px 400px;
+    background-position: 0 0, 150px 150px;
+    z-index: -2;
+    animation: stars 120s linear infinite;
+}
+
+@keyframes stars {
+    from { transform: translateY(0); }
+    to { transform: translateY(-1000px); }
+}
+
+
+body.theme-neon #neon-canvas { display: block; }
+
+body.theme-neon .timer-number,
+body.theme-neon .coming-soon-title {
+    color: #fff;
+    /* Яркое розово-голубое свечение */
+    text-shadow:
+        0 0 5px #fff,
+        0 0 10px #ff00de,
+        0 0 20px #ff00de,
+        0 0 40px #ff00de;
+}
+
+body.theme-neon .timer-block,
+body.theme-neon .action-button {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid #ff00de;
+    box-shadow: 0 0 15px #ff00de, inset 0 0 10px rgba(255, 0, 222, 0.4);
+    backdrop-filter: blur(3px);
+    color: #fff;
+    text-shadow: 0 0 5px #ff00de;
+}
+
+body.theme-neon .style-changer-img {
+    filter: hue-rotate(300deg) saturate(3) brightness(1.2) drop-shadow(0 0 15px #ff00de);
+}
+
+
+/* --- СТИЛИ ДЛЯ ТЕМЫ --- */
+body.theme-neon .back-button {
+    background-color: rgba(20, 0, 20, 0.7);
+}
+

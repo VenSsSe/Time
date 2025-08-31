@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Таймер обратного отсчета</title>
+    <!-- Подключение Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Подключение шрифтов -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Подключение всех файлов стилей -->
+    <link rel="stylesheet" href="css/themes/default/style.css">
+    <link rel="stylesheet" href="css/themes/matrix/style.css">
+    <link rel="stylesheet" href="css/themes/neon/style.css">
+    <link rel="stylesheet" href="css/themes/crypto/style.css">
+</head>
+<body class="flex items-center justify-center min-h-screen p-2 sm:p-4 overflow-hidden">
+    
+    <!-- ОБНОВЛЕННЫЙ БЛОК: Заставка (прелоадер) -->
+    <div id="preloader" class="fixed top-0 left-0 w-full h-full bg-black z-50 flex flex-col items-center justify-center p-4 transition-colors duration-500">
+        <!-- Контейнер для центрирования -->
+        <div class="w-full max-w-lg text-center">
+            <div id="preloader-top-text" class="h-12 text-3xl md:text-4xl font-bold font-orbitron mb-4 text-white transition-opacity duration-500 opacity-0"></div>
+            <!-- Контейнер для управления шириной полосы (70%) -->
+            <div class="w-[70%] mx-auto">
+                <!-- Контейнер полосы (в 2 раза толще, без overflow-hidden) -->
+                <div class="w-full bg-gray-900 rounded-full h-8 border-2 border-gray-700">
+                    <div id="progress-bar" class="h-full rounded-full transition-all duration-100" style="width: 0%"></div>
+                </div>
+            </div>
+            <div id="percentage-text" class="text-white font-orbitron text-2xl mt-3">0%</div>
+            <div id="preloader-bottom-text" class="font-bold text-4xl md:text-5xl mt-4 h-16 font-orbitron">
+                <span>З</span><span>а</span><span>г</span><span>р</span><span>у</span><span>з</span><span>к</span><span>а</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Canvas для эффектов -->
+    <canvas id="matrix-canvas"></canvas>
+    <canvas id="neon-canvas"></canvas>
+    <canvas id="crypto-canvas"></canvas>
+
+    <!-- Основной контент (изначально скрыт) -->
+    <div id="app-container" class="opacity-0 transition-opacity duration-500 w-full">
+        <div id="elevator-content" class="w-full">
+            <main class="main-content">
+                 <!-- Цена криптовалюты -->
+                <div id="btc-price-container" class="relative z-10 text-center mb-4 cursor-pointer">
+                    <!-- Содержимое будет добавлено JS -->
+                </div>
+
+                <!-- Таймер / Coming Soon -->
+                <div id="countdown-container" class="text-center w-full">
+                    <img id="style-changer-img" src="Images/Neuro.jpg" alt="Change Style" class="style-changer-img mx-auto max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg h-auto">
+                     <div class="grid grid-cols-4 gap-2 sm:gap-3 md:gap-6 max-w-4xl mx-auto mt-4">
+                        <div class="timer-block p-2 sm:p-4 md:p-6 rounded-lg flex flex-col items-center justify-center aspect-square"><div id="days" class="timer-number text-2xl sm:text-5xl md:text-7xl font-bold leading-none">0</div><div class="timer-label text-[10px] sm:text-xs md:text-base mt-2">Дней</div></div>
+                        <div class="timer-block p-2 sm:p-4 md:p-6 rounded-lg flex flex-col items-center justify-center aspect-square"><div id="hours" class="timer-number text-2xl sm:text-5xl md:text-7xl font-bold leading-none">00</div><div class="timer-label text-[10px] sm:text-xs md:text-base mt-2">Часов</div></div>
+                        <div class="timer-block p-2 sm:p-4 md:p-6 rounded-lg flex flex-col items-center justify-center aspect-square"><div id="minutes" class="timer-number text-2xl sm:text-5xl md:text-7xl font-bold leading-none">00</div><div class="timer-label text-[10px] sm:text-xs md:text-base mt-2">Минут</div></div>
+                        <div class="timer-block p-2 sm:p-4 md:p-6 rounded-lg flex flex-col items-center justify-center aspect-square"><div id="seconds" class="timer-number text-2xl sm:text-5xl md:text-7xl font-bold leading-none">00</div><div class="timer-label text-[10px] sm:text-xs md:text-base mt-2">Секунд</div></div>
+                    </div>
+                </div>
+                <div id="coming-soon-container" class="text-center hidden">
+                    <img id="style-changer-img-soon" src="Images/Neuro.jpg" alt="Change Style" class="style-changer-img mx-auto mb-6 md:mb-8 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg h-auto">
+                    <h1 class="coming-soon-title text-4xl sm:text-5xl md:text-7xl font-bold tracking-widest">COMING SOON</h1>
+                </div>
+                <div id="finished-message" class="text-center hidden">
+                    <h1 class="text-4xl md:text-6xl font-bold">Время вышло!</h1>
+                </div>
+
+                <!-- Кнопки действий -->
+                <div id="action-buttons" class="grid grid-cols-3 gap-2 sm:gap-3 md:gap-6 max-w-4xl mx-auto mt-4">
+                    <button id="youtube-btn" class="action-button">YouTube</button>
+                    <button id="tiktok-btn" class="action-button">TikTok</button>
+                    <button id="bitcoin-btn" class="action-button" disabled>Bitcoin</button>
+                </div>
+            </main>
+        </div>
+        
+        <!-- Панели для ссылок -->
+        <div id="links-panel" class="links-panel"></div>
+        <div id="crypto-panel" class="links-panel"></div>
+
+        <!-- Кнопка громкости -->
+        <button id="volume-btn" class="volume-button"></button>
+    </div>
+
+    <!-- Подключаем скрипты -->
+    <script src="js/main.js" type="module"></script>
+</body>
+</html>
+

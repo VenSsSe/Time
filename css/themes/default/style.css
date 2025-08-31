@@ -1,0 +1,179 @@
+/* Base styles for the entire application */
+body {
+    font-family: 'Inter', sans-serif;
+    user-select: none;
+    transition: background 0.5s ease, color 0.5s ease;
+    background-color: #000;
+    color: #fff;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- ОБНОВЛЕННЫЕ СТИЛИ И АНИМАЦИИ ДЛЯ ПРЕЛОАДЕРА --- */
+@keyframes backgroundFadeToBlue {
+    from { background-color: #000000; }
+    to { background-color: #0c1445; }
+}
+
+/* Мигание: оранжевый и красный */
+@keyframes errorFlicker {
+    0%, 100% { background-color: #9a3412; } /* orange-800 */
+    50% { background-color: #dc2626; } /* red-600 */
+}
+
+#preloader.preloader-fade-in {
+    animation: backgroundFadeToBlue 6s forwards;
+}
+
+#preloader.preloader-error-state {
+    animation: errorFlicker 0.2s infinite;
+}
+
+.neon-green-text {
+    color: #39FF14;
+    text-shadow: 0 0 5px #39FF14, 0 0 10px #39FF14, 0 0 20px #fff;
+}
+.neon-yellow-text {
+    color: #fde047; /* Tailwind yellow-300 */
+    text-shadow: 0 0 5px #facc15, 0 0 10px #facc15, 0 0 20px #fff;
+}
+
+#progress-bar.neon-green-bar {
+    background-color: #39FF14;
+    box-shadow: 0 0 8px #39FF14, 0 0 12px #fff;
+}
+#progress-bar.neon-red-bar {
+    background-color: #FF3131;
+    box-shadow: 0 0 8px #FF3131, 0 0 12px #fff;
+}
+
+
+#preloader-bottom-text span {
+    transition: opacity 0.5s ease-in-out;
+}
+#preloader-bottom-text span.fade-out {
+    opacity: 0.1;
+}
+
+/* --- КОНЕЦ СТИЛЕЙ ПРЕЛОАДЕРА --- */
+
+.style-changer-img {
+    -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none; -webkit-user-drag: none;
+    cursor: pointer;
+}
+
+.timer-number, .coming-soon-title { font-family: 'Orbitron', sans-serif; }
+.timer-block, .action-button {
+    background-color: #111827;
+    transition: background 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
+}
+
+#matrix-canvas, #neon-canvas, #crypto-canvas {
+    display: none; position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%; z-index: -1;
+}
+.main-content { position: relative; z-index: 10; }
+
+/* --- Elevator & Panels --- */
+#elevator-content { 
+    transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.5s ease-in-out; 
+}
+#elevator-content.content-lifted { 
+    transform: translateY(-250vh); /* Увеличили смещение, чтобы избежать наложения */
+}
+#elevator-content.content-transparent { opacity: 0.05; }
+
+.links-panel {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    height: auto; max-height: 40vh; display: flex;
+    justify-content: center; align-items: center;
+    padding: 2rem 1rem; opacity: 0;
+    transform: translateY(100%);
+    transition: opacity 0.6s 0.2s ease-out, transform 0.6s 0.2s ease-out;
+    z-index: 20; /* Панель ссылок всегда над кнопкой громкости */
+    overflow-y: auto;
+}
+.links-panel.visible { opacity: 1; transform: translateY(0); }
+
+.links-grid {
+    display: grid; grid-template-columns: repeat(1, 1fr);
+    gap: 1rem; width: 100%; max-width: 42rem;
+}
+@media (min-width: 640px) { .links-grid { grid-template-columns: repeat(3, 1fr); } }
+
+/* --- Action Buttons --- */
+#action-buttons { transition: opacity 0.5s, transform 0.5s; }
+#action-buttons.hidden { opacity: 0; transform: translateY(50px); pointer-events: none; }
+
+.action-button {
+    border-radius: 0.5rem; 
+    padding: 1rem 0; /* Высота кнопок */
+    font-size: 1rem; 
+    font-weight: bold; 
+    color: #fff;
+    transition: all 0.3s ease; 
+    font-family: 'Orbitron', sans-serif;
+    border: 1px solid transparent;
+    display: flex; /* Для центрирования текста */
+    align-items: center; 
+    justify-content: center;
+}
+.action-button:hover:not(:disabled) { transform: scale(1.05); background-color: #1f2937; }
+.action-button:disabled { cursor: not-allowed; opacity: 0.4; }
+
+.back-button {
+    grid-column: 1 / -1; 
+    margin-top: 1rem;
+    background-color: rgba(40, 40, 50, 0.7);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* --- Volume Button --- */
+.volume-button {
+    position: fixed; top: 1rem; right: 1rem; /* Переместили кнопку в верхний правый угол */
+    width: 60px; height: 30px;
+    background-color: rgba(20, 20, 30, 0.7);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    color: #fff; font-family: 'Orbitron', sans-serif;
+    font-size: 0.8rem; display: flex; align-items: center; justify-content: center;
+    z-index: 15; /* Установили z-index для правильного отображения */
+    transition: all 0.3s ease;
+}
+.volume-button:hover { transform: scale(1.1); }
+
+/* --- ОПТИМИЗАЦИЯ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ --- */
+@media (max-width: 639px) {
+    /* Уменьшаем "подъем" контента, чтобы он не уходил за экран */
+    #elevator-content.content-lifted {
+        transform: translateY(-150vh); /* Дополнительно подняли для полного скрытия */
+    }
+
+    /* Уменьшаем максимальную высоту всплывающих панелей */
+    .links-panel {
+        max-height: 35vh;
+        padding: 1rem 1rem;
+    }
+    
+    /* Делаем кнопки немного ниже для экономии места */
+    .action-button {
+        padding: 0.8rem 0;
+        font-size: 0.9rem;
+    }
+
+    /* Уменьшаем отступ для кнопки "Назад" */
+    .back-button {
+        margin-top: 0.5rem;
+    }
+    
+    /* Делаем кнопку громкости компактнее */
+    .volume-button {
+        width: 50px;
+        height: 25px;
+        font-size: 0.7rem;
+        top: 0.5rem;
+        right: 0.5rem;
+    }
+}

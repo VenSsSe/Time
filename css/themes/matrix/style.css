@@ -1,0 +1,43 @@
+/* --- Theme: Matrix --- */
+body.theme-matrix {
+    color: #00ff41; font-family: 'Courier New', Courier, monospace;
+}
+body.theme-matrix #matrix-canvas { display: block; }
+body.theme-matrix::after {
+    content: ' '; display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background-image: linear-gradient(0deg, rgba(0,0,0,0) 50%, rgba(0,255,65,0.1) 50%);
+    background-size: 100% 4px; opacity: 0.3; pointer-events: none;
+    animation: scanlines 10s linear infinite; z-index: 0;
+}
+@keyframes text-flicker { 0%, 100% { opacity: 1; text-shadow: 0 0 8px #00ff41, 0 0 15px #00ff41; } 50% { opacity: 0.7; text-shadow: 0 0 8px #00ff41; } }
+@keyframes scanlines { from { background-position: 0 0; } to { background-position: 0 -100px; } }
+
+body.theme-matrix .timer-number,
+body.theme-matrix .coming-soon-title {
+    font-family: 'Orbitron', sans-serif; animation: text-flicker 3s infinite;
+}
+body.theme-matrix .timer-label {
+    font-family: 'Courier New', Courier, monospace; animation: text-flicker 3s infinite;
+}
+body.theme-matrix .timer-block {
+    background: transparent; border: 1px solid #00ff41;
+    box-shadow: 0 0 15px #00ff41, inset 0 0 10px rgba(0, 255, 65, 0.5);
+    backdrop-filter: blur(2px);
+}
+body.theme-matrix .style-changer-img {
+    filter: hue-rotate(120deg) brightness(1.5) contrast(1.2) drop-shadow(0 0 10px #00ff41);
+}
+
+/* --- СТИЛИ ДЛЯ ТЕМЫ --- */
+body.theme-matrix .action-button {
+    background: transparent;
+    border: 1px solid #00ff41;
+    box-shadow: 0 0 15px #00ff41;
+    color: #00ff41;
+    animation: text-flicker 3s infinite;
+}
+
+body.theme-matrix .back-button {
+    background-color: rgba(0, 30, 0, 0.7);
+}
+
