@@ -1,7 +1,7 @@
 // St/sound/sound-manager.js
 
 // Импортируем конфигурацию звуков из отдельного файла
-import { sounds } from './sound-config.js';
+import { sounds } from '/config/sound-config.js';
 
 // Приватное состояние для менеджера (недоступно извне)
 let currentAudio = new Audio();

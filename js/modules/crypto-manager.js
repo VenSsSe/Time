@@ -1,5 +1,5 @@
 // St/js/modules/crypto-manager.js
-import { cryptoPairs } from '../crypto-config.js';
+import { cryptoPairs } from '/config/crypto-config.js';
 import { themeManager } from './theme-manager.js';
 
 let currentCryptoIndex = 0;

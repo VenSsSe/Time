@@ -1,6 +1,6 @@
 // St/js/modules/ui-manager.js
-import { socialLinks } from '../links.js';
-import { cryptoPairs } from '../crypto-config.js';
+import { socialLinks } from '/config/links-config.js';
+import { cryptoPairs } from '/config/crypto-config.js';
 
 const imageContainer = document.querySelector('.image-container');
 const actionButtons = document.getElementById('action-buttons');
