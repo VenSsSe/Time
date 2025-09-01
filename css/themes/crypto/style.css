@@ -18,7 +18,9 @@ body.theme-crypto #crypto-canvas {
     opacity: 0.5;
 }
 
-/* --- Стили для отображения цены (адаптивные) --- */
+
+
+
 #btc-price-container {
     /* --- Стили для МОБИЛЬНЫХ УСТРОЙСТВ --- */
     position: absolute;
@@ -56,9 +58,22 @@ body.theme-crypto #crypto-canvas {
         left: auto;
         transform: none; 
         
-        margin: 1rem auto 1.5rem auto; 
+        margin: 1rem auto 1.5rem auto;
+        height: 80px; 
+    }
+    #crypto-price {
+        font-size: 1.5rem; /* Увеличиваем размер шрифта для ПК */
+        line-height: 1.8;  /* Управляем высотой строки для лучшей читаемости */}
+}
+
+/* --- Стили для отображения цены (адаптивные) --- */
+/* --- Стили для мобильных устройств (экраны < 768px) --- */
+@media (max-width: 767px) {
+    #btc-price-container {
+        top: -17%;
     }
 }
+
 
 body.theme-crypto #btc-price-container {
     opacity: 1;
