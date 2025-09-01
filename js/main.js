@@ -1,4 +1,4 @@
-// St/js/main.js
+// js/main.js
 
 // --- Импорт модулей ---
 import { startPreloader } from './modules/preloader.js';
@@ -12,21 +12,18 @@ import { cryptoManager } from './modules/crypto-manager.js';
  * Запускается после завершения работы предзагрузчика.
  */
 function initializeApp() {
-    // Настройка, которая определяет, показывать ли таймер
-    const showTimer = false; 
-
-    // 1. Настраиваем и запускаем таймер обратного отсчета
-    setupCountdown(showTimer);
+    // 1. Получаем текущую тему при запуске
+    const currentTheme = themeManager.getCurrentTheme();
     
-    // 2. Настраиваем все обработчики событий (клики, нажатия)
-    // Передаем менеджеры, чтобы обработчики могли вызывать их функции
+    // 2. Настраиваем и запускаем таймер обратного отсчета на основе этой темы
+    setupCountdown(currentTheme);
+    
+    // 3. Настраиваем все обработчики событий (клики, нажатия)
     setupEventListeners(themeManager, cryptoManager);
 }
 
 // --- Точка входа в приложение ---
-// Когда DOM готов, запускаем предзагрузчик.
-// В качестве колбэка передаем ему функцию инициализации основного приложения.
 document.addEventListener('DOMContentLoaded', () => {
+    // Теперь preloader сам решает, когда вызвать initializeApp
     startPreloader(initializeApp);
 });
-

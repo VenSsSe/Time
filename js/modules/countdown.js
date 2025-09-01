@@ -1,12 +1,14 @@
-// St/js/modules/countdown.js
+// js/modules/countdown.js
 
-const targetDate = new Date(2026, 5, 1, 15, 0, 0).getTime();
+import { timerConfig } from '../../config/timer-config.js';
+
 let countdownInterval;
+let targetDate;
 
 const els = {
-    daysEl: document.getElementById('days'), 
+    daysEl: document.getElementById('days'),
     hoursEl: document.getElementById('hours'),
-    minutesEl: document.getElementById('minutes'), 
+    minutesEl: document.getElementById('minutes'),
     secondsEl: document.getElementById('seconds'),
     countdownContainer: document.getElementById('countdown-container'),
     comingSoonContainer: document.getElementById('coming-soon-container'),
@@ -31,10 +33,25 @@ function updateCountdown() {
     els.secondsEl.textContent = format(Math.floor((distance % (1000 * 60)) / 1000));
 }
 
-function setupCountdown(showTimer) {
-    if (showTimer) {
+function setupCountdown(currentTheme) {
+    // 1. Очищаем предыдущий интервал, чтобы таймеры не накладывались
+    clearInterval(countdownInterval);
+    
+    // 2. Сбрасываем видимость всех связанных элементов
+    els.countdownContainer.classList.add('hidden');
+    els.comingSoonContainer.classList.add('hidden');
+    els.finishedMessage.classList.add('hidden');
+    els.actionButtons.classList.remove('hidden'); // Показываем кнопки по умолчанию
+
+    // 3. Получаем настройки для текущей темы из конфига
+    const config = timerConfig[currentTheme] || timerConfig['default'];
+
+    if (config.showTimer && config.targetDate) {
+        targetDate = new Date(config.targetDate).getTime();
+        
         els.comingSoonContainer.classList.add('hidden');
         els.countdownContainer.classList.remove('hidden');
+        
         updateCountdown();
         countdownInterval = setInterval(updateCountdown, 1000);
     } else {
