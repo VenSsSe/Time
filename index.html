@@ -56,10 +56,10 @@
                 <div id="countdown-container" class="text-center w-full">
                     <img id="style-changer-img" src="Images/Neuro.jpg" alt="Change Style" class="style-changer-img mx-auto max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg h-auto">
                      <div class="grid grid-cols-4 gap-2 sm:gap-3 md:gap-6 max-w-4xl mx-auto mt-4">
-                        <div class="timer-block p-2 sm:p-4 md:p-6 rounded-lg flex flex-col items-center justify-center aspect-square"><div id="days" class="timer-number text-2xl sm:text-5xl md:text-7xl font-bold leading-none">0</div><div class="timer-label text-[10px] sm:text-xs md:text-base mt-2">Дней</div></div>
-                        <div class="timer-block p-2 sm:p-4 md:p-6 rounded-lg flex flex-col items-center justify-center aspect-square"><div id="hours" class="timer-number text-2xl sm:text-5xl md:text-7xl font-bold leading-none">00</div><div class="timer-label text-[10px] sm:text-xs md:text-base mt-2">Часов</div></div>
-                        <div class="timer-block p-2 sm:p-4 md:p-6 rounded-lg flex flex-col items-center justify-center aspect-square"><div id="minutes" class="timer-number text-2xl sm:text-5xl md:text-7xl font-bold leading-none">00</div><div class="timer-label text-[10px] sm:text-xs md:text-base mt-2">Минут</div></div>
-                        <div class="timer-block p-2 sm:p-4 md:p-6 rounded-lg flex flex-col items-center justify-center aspect-square"><div id="seconds" class="timer-number text-2xl sm:text-5xl md:text-7xl font-bold leading-none">00</div><div class="timer-label text-[10px] sm:text-xs md:text-base mt-2">Секунд</div></div>
+                        <div id="day-selector" class="timer-block p-2 sm:p-4 md:p-6 rounded-lg flex flex-col items-center justify-center aspect-square cursor-pointer"><div id="days" class="timer-number text-2xl sm:text-5xl md:text-7xl font-bold leading-none">0</div><div class="timer-label text-[10px] sm:text-xs md:text-base mt-2">Дней</div></div>
+                        <div id="hour-selector" class="timer-block p-2 sm:p-4 md:p-6 rounded-lg flex flex-col items-center justify-center aspect-square cursor-pointer"><div id="hours" class="timer-number text-2xl sm:text-5xl md:text-7xl font-bold leading-none">00</div><div class="timer-label text-[10px] sm:text-xs md:text-base mt-2">Часов</div></div>
+                        <div id="minute-selector" class="timer-block p-2 sm:p-4 md:p-6 rounded-lg flex flex-col items-center justify-center aspect-square cursor-pointer"><div id="minutes" class="timer-number text-2xl sm:text-5xl md:text-7xl font-bold leading-none">00</div><div class="timer-label text-[10px] sm:text-xs md:text-base mt-2">Минут</div></div>
+                        <div id="second-selector" class="timer-block p-2 sm:p-4 md:p-6 rounded-lg flex flex-col items-center justify-center aspect-square cursor-pointer"><div id="seconds" class="timer-number text-2xl sm:text-5xl md:text-7xl font-bold leading-none">00</div><div class="timer-label text-[10px] sm:text-xs md:text-base mt-2">Секунд</div></div>
                     </div>
                 </div>
                 <div id="coming-soon-container" class="text-center hidden">
@@ -88,7 +88,12 @@
     </div>
 
     <!-- Подключаем скрипты -->
-    <script src="js/main.js" type="module"></script>
+        <!-- Подключаем локальные скрипты для графиков -->
+    <script src="js/vendor/chart.js"></script>
+    <script src="js/vendor/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="js/vendor/chartjs-chart-financial.min.js"></script>
+
+    <!-- Подключаем основной скрипт -->
+    <script src="js/main.js" type="module" defer></script>
 </body>
 </html>
-

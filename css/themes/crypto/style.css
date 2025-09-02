@@ -1,6 +1,5 @@
 /* --- Theme: Crypto --- */
 body.theme-crypto {
-    background-color: #131722;
     color: #d1d4dc;
 }
 
@@ -8,62 +7,24 @@ body.theme-crypto {
 body.theme-crypto #crypto-canvas {
     display: block;
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90vw;
-    height: 60vh;
-    max-width: 1200px;
-    z-index: -1;
-    opacity: 0.5;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1; /* Corrected z-index */
+    opacity: 1;
+    pointer-events: none; /* Added pointer-events */
 }
 
-/* --- ВАШИ СТИЛИ ПОЗИЦИОНИРОВАНИЯ (СОХРАНЕНЫ) --- */
+/* --- Стили для ценового контейнера --- */
 #btc-price-container {
-    position: absolute;
-    top: -40px; 
-    left: 50%;
-    transform: translateX(-50%); 
-    width: fit-content;
-    padding: 0.1rem 1.5rem;
-    font-size: 1.2rem;
-    line-height: 1.2;
-    font-family: 'Orbitron', sans-serif;
-    font-weight: bold;
-    color: #ffffff;
-    background-color: rgba(40, 40, 50, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 0.5rem;
-    backdrop-filter: blur(5px);
+    position: relative;
     z-index: 100;
-    transition: opacity 0.5s ease, cursor 0.3s ease;
-    opacity: 0;
-    pointer-events: none;
-    white-space: nowrap;
+    padding: 1rem;
+    width: 100%;
 }
 
-@media (min-width: 768px) {
-    #btc-price-container {
-        position: relative; 
-        top: auto;
-        left: auto;
-        transform: none; 
-        margin: 1rem auto 1.5rem auto;
-        height: 80px; 
-    }
-    #crypto-price {
-        font-size: 1.5rem;
-        line-height: 1.8;
-    }
-}
-
-@media (max-width: 767px) {
-    #btc-price-container {
-        top: -17%;
-    }
-}
-
-/* --- ИСПРАВЛЕННЫЕ СТИЛИ ДЛЯ ПОДСВЕТКИ И АНИМАЦИИ --- */
+/* --- Стили для подсветки и анимации цены --- */
 #crypto-price {
     transition: color 0.4s ease, text-shadow 0.4s ease;
 }
@@ -84,24 +45,17 @@ body.theme-crypto #crypto-canvas {
     color: #ff4757;
 }
 
-/* ИСПРАВЛЕНО: Анимация "пульса" теперь применяется только к индикатору */
 .indicator-flash {
     animation: price-pulse 0.7s ease-out;
 }
 
 @keyframes price-pulse {
     0% { transform: scale(1); }
-    50% { transform: scale(1.15); } /* Сделали пульс чуть заметнее */
+    50% { transform: scale(1.15); }
     100% { transform: scale(1); }
 }
 
-/* --- ОСТАЛЬНЫЕ ВАШИ СТИЛИ (СОХРАНЕНЫ) --- */
-body.theme-crypto #btc-price-container {
-    opacity: 1;
-    pointer-events: auto;
-    cursor: pointer;
-}
-
+/* --- Общие стили для темы Crypto --- */
 body.theme-crypto .timer-block,
 body.theme-crypto .action-button {
     background-color: rgba(28, 33, 46, 0.7);
@@ -112,6 +66,57 @@ body.theme-crypto .action-button {
 }
 
 body.theme-crypto .action-button:hover:not(:disabled) {
+    background-color: #2a2e39;
+    border-color: #5080ff;
+}
+
+/* Стилизация скроллбара */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #161b22;
+}
+::-webkit-scrollbar-thumb {
+    background: #30363d;
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #49515a;
+}
+
+/* --- Стили для UI графика --- */
+#chart-header {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+}
+
+@media (min-width: 768px) {
+    #chart-header {
+        flex-direction: row;
+        align-items: center;
+    }
+}
+
+#price-info {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 0.25rem;
+}
+
+#current-price {
+    font-size: 1.5rem;
+}
+
+#chart-header h2 {
+    font-size: 1.1rem;
+}
+
+.timer-block.active {
     background-color: #2a2e39;
     border-color: #5080ff;
 }
