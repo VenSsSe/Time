@@ -1,6 +1,7 @@
 // St/js/modules/event-handlers.js
 import { showLinksPanel, showCryptoPanel } from './ui-manager.js';
 import { audioManager } from '../../sound/sound-manager.js';
+import { cryptoEffect } from '../effects/crypto.js'; // Import cryptoEffect
 
 /**
  * Настраивает все обработчики событий для интерактивных элементов.
@@ -27,7 +28,7 @@ function setupEventListeners(themeManager, cryptoManager) {
         clearTimeout(imagePressTimer);
         if (!imageLongPressTriggered) {
             if (!document.querySelector('.links-panel.visible') && !document.querySelector('#crypto-panel.visible')) {
-                themeManager.changeTheme(cryptoManager.getCurrentSymbol());
+                themeManager.changeTheme(cryptoManager.getCurrentPair().symbol);
             }
         }
     };
@@ -59,7 +60,11 @@ function setupEventListeners(themeManager, cryptoManager) {
         pricePressTimer = setTimeout(() => {
             if (themeManager.isCurrentTheme('crypto')) {
                 priceLongPressTriggered = true;
-                showCryptoPanel(cryptoManager.selectCrypto);
+                const onCryptoSelect = (index, pair) => {
+                    cryptoManager.selectCrypto(index);
+                    cryptoEffect.updateSymbol(pair);
+                };
+                showCryptoPanel(onCryptoSelect);
             }
         }, 2000);
     };
@@ -68,7 +73,8 @@ function setupEventListeners(themeManager, cryptoManager) {
         clearTimeout(pricePressTimer);
         if (themeManager.isCurrentTheme('crypto')) {
             if (!priceLongPressTriggered) {
-                cryptoManager.switchNextCrypto();
+                const nextPair = cryptoManager.switchNextCrypto();
+                cryptoEffect.updateSymbol(nextPair);
             }
         }
     };
@@ -78,6 +84,20 @@ function setupEventListeners(themeManager, cryptoManager) {
     priceContainer.addEventListener('mouseup', handlePricePressEnd);
     priceContainer.addEventListener('touchend', handlePricePressEnd);
     priceContainer.addEventListener('mouseleave', () => clearTimeout(pricePressTimer));
+
+    // --- Переключатели таймфрейма ---
+    const selectors = { day: 'day-selector', hour: 'hour-selector', minute: 'minute-selector', second: 'second-selector' };
+    Object.entries(selectors).forEach(([tf, id]) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener('click', () => {
+            if (themeManager.isCurrentTheme('crypto')) {
+                document.querySelectorAll('.timer-block.active').forEach(b => b.classList.remove('active'));
+                el.classList.add('active');
+                cryptoEffect.switchTimeframe(tf);
+            }
+        });
+    });
 
     // --- Кнопка громкости ---
     const volumeBtn = document.getElementById('volume-btn');
