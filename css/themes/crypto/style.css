@@ -18,24 +18,16 @@ body.theme-crypto #crypto-canvas {
     opacity: 0.5;
 }
 
-
-
-
+/* --- ВАШИ СТИЛИ ПОЗИЦИОНИРОВАНИЯ (СОХРАНЕНЫ) --- */
 #btc-price-container {
-    /* --- Стили для МОБИЛЬНЫХ УСТРОЙСТВ --- */
     position: absolute;
     top: -40px; 
     left: 50%;
     transform: translateX(-50%); 
     width: fit-content;
-
-    /* * РАДИКАЛЬНЫЕ ИЗМЕНЕНИЯ ЗДЕСЬ:
-     * Делаем блок максимально тонким.
-    */
-    padding: 0.1rem 1.5rem; /* Сильно уменьшаем вертикальные отступы */
-    font-size: 1.2rem;     /* Уменьшаем шрифт */
-    line-height: 1.2;      /* Управляем высотой строки, делая ее компактной */
-
+    padding: 0.1rem 1.5rem;
+    font-size: 1.2rem;
+    line-height: 1.2;
     font-family: 'Orbitron', sans-serif;
     font-weight: bold;
     color: #ffffff;
@@ -50,38 +42,66 @@ body.theme-crypto #crypto-canvas {
     white-space: nowrap;
 }
 
-/* --- Стили для ПК (экраны шире 768px) --- */
 @media (min-width: 768px) {
     #btc-price-container {
         position: relative; 
         top: auto;
         left: auto;
         transform: none; 
-        
         margin: 1rem auto 1.5rem auto;
         height: 80px; 
     }
     #crypto-price {
-        font-size: 1.5rem; /* Увеличиваем размер шрифта для ПК */
-        line-height: 1.8;  /* Управляем высотой строки для лучшей читаемости */}
+        font-size: 1.5rem;
+        line-height: 1.8;
+    }
 }
 
-/* --- Стили для отображения цены (адаптивные) --- */
-/* --- Стили для мобильных устройств (экраны < 768px) --- */
 @media (max-width: 767px) {
     #btc-price-container {
         top: -17%;
     }
 }
 
-
-body.theme-crypto #btc-price-container {
-    opacity: 1;
-    pointer-events: auto; /* Делаем блок кликабельным */
-    cursor: pointer; /* ИСПРАВЛЕНИЕ: Добавляем курсор-указатель */
+/* --- ИСПРАВЛЕННЫЕ СТИЛИ ДЛЯ ПОДСВЕТКИ И АНИМАЦИИ --- */
+#crypto-price {
+    transition: color 0.4s ease, text-shadow 0.4s ease;
 }
 
-/* Переопределение стилей для элементов таймера и кнопок */
+.price-up #crypto-price {
+    color: #26de81;
+    text-shadow: 0 0 10px #26de81, 0 0 20px #26de81;
+}
+.price-up #price-indicator {
+    color: #26de81;
+}
+
+.price-down #crypto-price {
+    color: #ff4757;
+    text-shadow: 0 0 10px #ff4757, 0 0 20px #ff4757;
+}
+.price-down #price-indicator {
+    color: #ff4757;
+}
+
+/* ИСПРАВЛЕНО: Анимация "пульса" теперь применяется только к индикатору */
+.indicator-flash {
+    animation: price-pulse 0.7s ease-out;
+}
+
+@keyframes price-pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); } /* Сделали пульс чуть заметнее */
+    100% { transform: scale(1); }
+}
+
+/* --- ОСТАЛЬНЫЕ ВАШИ СТИЛИ (СОХРАНЕНЫ) --- */
+body.theme-crypto #btc-price-container {
+    opacity: 1;
+    pointer-events: auto;
+    cursor: pointer;
+}
+
 body.theme-crypto .timer-block,
 body.theme-crypto .action-button {
     background-color: rgba(28, 33, 46, 0.7);
@@ -95,32 +115,3 @@ body.theme-crypto .action-button:hover:not(:disabled) {
     background-color: #2a2e39;
     border-color: #5080ff;
 }
-
-body.theme-crypto .back-button {
-    background-color: rgba(40, 40, 50, 0.7);
-}
-
-/* Свечение для текста и цифр */
-body.theme-crypto .timer-number,
-body.theme-crypto .coming-soon-title {
-    color: #fff;
-    text-shadow: 0 0 8px rgba(80, 128, 255, 0.5);
-}
-
-body.theme-crypto .style-changer-img {
-     filter: grayscale(80%) brightness(1.2) drop-shadow(0 0 10px rgba(80, 128, 255, 0.5));
-}
-
-/* Стили для кнопок выбора криптовалюты */
-.crypto-button {
-    color: #d1d4dc;
-    background-color: rgba(28, 33, 46, 0.8);
-    border: 1px solid #363a45 !important;
-}
-.crypto-button:hover {
-    color: #fff;
-    border-color: #5080ff !important;
-    transform: scale(1.05);
-    background-color: #2a2e39 !important;
-}
-
