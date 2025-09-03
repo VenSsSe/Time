@@ -13,8 +13,12 @@ export const cryptoEffect = {
 
     setup: function(initialSymbol = 'BTCUSDT') {
         this.currentSymbol = initialSymbol;
-        const canvas = document.getElementById('crypto-canvas');
-        if (!canvas) return;
+        let canvas = document.getElementById('crypto-canvas');
+        if (!canvas) {
+            canvas = document.createElement('canvas');
+            canvas.id = 'crypto-canvas';
+            document.body.appendChild(canvas);
+        }
 
         this.updateTickerUI(this.currentSymbol);
 
@@ -31,15 +35,42 @@ export const cryptoEffect = {
 
     stop: function() {
         return new Promise((resolve) => {
-            this.cleanup();
-            this.listeners.forEach(({ target, type, handler }) => target.removeEventListener(type, handler));
-            this.listeners = [];
-            const canvas = document.getElementById('crypto-canvas');
-            if (canvas) canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
-            const priceContainer = document.getElementById('btc-price-container');
-            if (priceContainer) priceContainer.innerHTML = '<!-- Содержимое будет добавлено JS -->';
-            document.querySelectorAll('.timer-block.active').forEach(b => b.classList.remove('active'));
-            resolve();
+            const cleanupAndResolve = () => {
+                this.listeners.forEach(({ target, type, handler }) => target.removeEventListener(type, handler));
+                this.listeners = [];
+                const canvas = document.getElementById('crypto-canvas');
+                if (canvas) {
+                    canvas.parentNode.removeChild(canvas);
+                }
+                document.querySelectorAll('.timer-block.active').forEach(b => b.classList.remove('active'));
+                resolve();
+            };
+
+            if (this.socket) {
+                this.socket.onclose = () => {
+                    this.socket = null;
+                    if (this.chart) {
+                        this.chart.destroy();
+                        this.chart = null;
+                    }
+                    if (this.intervalId) {
+                        clearInterval(this.intervalId);
+                        this.intervalId = null;
+                    }
+                    cleanupAndResolve();
+                };
+                this.socket.close();
+            } else {
+                if (this.chart) {
+                    this.chart.destroy();
+                    this.chart = null;
+                }
+                if (this.intervalId) {
+                    clearInterval(this.intervalId);
+                    this.intervalId = null;
+                }
+                cleanupAndResolve();
+            }
         });
     },
 
@@ -69,9 +100,13 @@ export const cryptoEffect = {
     },
 
     switchTimeframe: async function(timeframe) {
-        this.cleanup();
-        const canvas = document.getElementById('crypto-canvas');
-        if (!canvas) return;
+        await this.stop();
+        let canvas = document.getElementById('crypto-canvas');
+        if (!canvas) {
+            canvas = document.createElement('canvas');
+            canvas.id = 'crypto-canvas';
+            document.body.appendChild(canvas);
+        }
         const ctx = canvas.getContext('2d');
 
         const binanceIntervals = { second: '1s', minute: '1m', hour: '1h', day: '1d' };

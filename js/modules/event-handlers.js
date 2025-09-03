@@ -2,6 +2,7 @@
 import { showLinksPanel, showCryptoPanel } from './ui-manager.js';
 import { audioManager } from '../../sound/sound-manager.js';
 import { cryptoEffect } from '../effects/crypto.js'; // Import cryptoEffect
+import { interactionConfig } from '../../config/interaction-config.js';
 
 /**
  * Настраивает все обработчики событий для интерактивных элементов.
@@ -13,24 +14,56 @@ function setupEventListeners(themeManager, cryptoManager) {
     // --- Главное изображение (смена темы и пасхалка) ---
     let imagePressTimer = null;
     let imageLongPressTriggered = false;
+    let transparencyTimeout = null;
 
     const handleImagePressStart = (event) => {
         event.preventDefault();
+        const currentThemeName = themeManager.getCurrentTheme().replace('theme-', '');
+        const config = interactionConfig[currentThemeName] || interactionConfig['default'];
+
         imageLongPressTriggered = false;
         imagePressTimer = setTimeout(() => {
             imageLongPressTriggered = true;
-            document.getElementById('elevator-content').classList.add('content-transparent');
-            setTimeout(() => document.getElementById('elevator-content').classList.remove('content-transparent'), 7000);
-        }, 2000);
+            const elevatorContent = document.getElementById('elevator-content');
+            elevatorContent.style.opacity = config.dimmingPercentage;
+            
+            if (!config.enableBackgroundInteraction) {
+                elevatorContent.style.pointerEvents = 'none';
+            } else {
+                elevatorContent.style.pointerEvents = config.topLayerPointerEvents;
+                if (config.topLayerPointerEvents === 'none') {
+                    for (const child of elevatorContent.children) {
+                        child.style.pointerEvents = 'none';
+                    }
+                }
+            }
+
+            transparencyTimeout = setTimeout(() => {
+                elevatorContent.style.opacity = '1';
+                elevatorContent.style.pointerEvents = ''; // Сброс стиля
+                for (const child of elevatorContent.children) {
+                    child.style.pointerEvents = '';
+                }
+            }, config.transparencyDuration);
+        }, config.longPressDuration);
     };
 
-    const handleImagePressEnd = () => {
+    const handleImagePressEnd = async () => {
         clearTimeout(imagePressTimer);
-        if (!imageLongPressTriggered) {
+        const elevatorContent = document.getElementById('elevator-content');
+        if (elevatorContent.style.opacity !== '' && elevatorContent.style.opacity !== '1') {
+            clearTimeout(transparencyTimeout);
+            elevatorContent.style.opacity = '1';
+            elevatorContent.style.pointerEvents = '';
+            for (const child of elevatorContent.children) {
+                child.style.pointerEvents = '';
+            }
+        } else if (!imageLongPressTriggered) {
             if (!document.querySelector('.links-panel.visible') && !document.querySelector('#crypto-panel.visible')) {
-                themeManager.changeTheme(cryptoManager.getCurrentPair().symbol);
+                await themeManager.changeTheme(cryptoManager.getCurrentPair().symbol);
             }
         }
+        imageLongPressTriggered = false;
     };
     
     const addStyleChangerListeners = (element) => {
@@ -39,7 +72,9 @@ function setupEventListeners(themeManager, cryptoManager) {
         element.addEventListener('touchstart', handleImagePressStart, { passive: false });
         element.addEventListener('mouseup', handleImagePressEnd);
         element.addEventListener('touchend', handleImagePressEnd);
-        element.addEventListener('mouseleave', () => clearTimeout(imagePressTimer));
+        element.addEventListener('mouseleave', () => {
+            clearTimeout(imagePressTimer);
+        });
     };
 
     addStyleChangerListeners(document.getElementById('style-changer-img'));
@@ -56,6 +91,9 @@ function setupEventListeners(themeManager, cryptoManager) {
 
     const handlePricePressStart = (event) => {
         event.preventDefault();
+        const currentThemeName = themeManager.getCurrentTheme().replace('theme-', '');
+        const config = interactionConfig[currentThemeName] || interactionConfig['default'];
+
         priceLongPressTriggered = false;
         pricePressTimer = setTimeout(() => {
             if (themeManager.isCurrentTheme('crypto')) {
@@ -66,10 +104,10 @@ function setupEventListeners(themeManager, cryptoManager) {
                 };
                 showCryptoPanel(onCryptoSelect);
             }
-        }, 2000);
+        }, config.longPressDuration);
     };
 
-    const handlePricePressEnd = () => {
+    const handlePricePressEndCrypto = () => {
         clearTimeout(pricePressTimer);
         if (themeManager.isCurrentTheme('crypto')) {
             if (!priceLongPressTriggered) {
@@ -81,8 +119,8 @@ function setupEventListeners(themeManager, cryptoManager) {
 
     priceContainer.addEventListener('mousedown', handlePricePressStart);
     priceContainer.addEventListener('touchstart', handlePricePressStart, { passive: false });
-    priceContainer.addEventListener('mouseup', handlePricePressEnd);
-    priceContainer.addEventListener('touchend', handlePricePressEnd);
+    priceContainer.addEventListener('mouseup', handlePricePressEndCrypto);
+    priceContainer.addEventListener('touchend', handlePricePressEndCrypto);
     priceContainer.addEventListener('mouseleave', () => clearTimeout(pricePressTimer));
 
     // --- Переключатели таймфрейма ---

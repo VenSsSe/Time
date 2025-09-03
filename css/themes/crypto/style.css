@@ -17,11 +17,16 @@ body.theme-crypto #crypto-canvas {
 }
 
 /* --- Стили для ценового контейнера --- */
-#btc-price-container {
-    position: relative;
+body.crypto-theme-active #btc-price-container {
+    display: block;
+    position: absolute;
+    top: -4rem;
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 100;
     padding: 1rem;
     width: 100%;
+    max-width: 42rem;
 }
 
 /* --- Стили для подсветки и анимации цены --- */
